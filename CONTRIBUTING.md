@@ -6,6 +6,23 @@ reglas que el agente sigue cuando trabaja en vuestros proyectos reales
 (Sabre, Amadeus, AirGateway...) — ese archivo se carga en todas partes,
 este `CONTRIBUTING.md` solo aplica aquí dentro.
 
+> **No edites `agents/` ni `skills/` a mano.** Pídeselo a tu agente de IA
+> (Claude Code, OpenCode...) trabajando dentro de este repo: "añade una
+> skill `php-symfony-conventions` para tal caso", "crea el agente
+> `react-dev`", "esta skill ya no se usa, márcala como deprecated"... Este
+> documento es precisamente el contexto que el agente necesita para
+> hacerlo bien a la primera — dónde va cada cosa, qué tipo de recurso es
+> (agente vs. skill vs. `.opencode/` de proyecto), qué naming usar, qué
+> campos de frontmatter son obligatorios y cómo versionar. Si el agente
+> te pregunta el prefijo de stack o el owner es porque este documento no
+> se lo resuelve — respóndele y sigue adelante, no lo rellenes tú a mano
+> saltándote el checklist.
+>
+> Por eso, si añades o cambias algo en este documento, hazlo pensando en
+> que quien lo va a "leer y ejecutar" la mayoría de las veces es un
+> agente de IA, no una persona: sé explícito y no des nada por
+> sobreentendido.
+
 ---
 
 ## Antes de crear algo nuevo

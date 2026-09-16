@@ -134,13 +134,18 @@ crontab -e
 ├── README.md
 │
 ├── agents/
-│   └── net-dev.md                     # agente .NET (Sabre/Amadeus/AirGateway)
-│                                       # añade aquí php-dev.md, react-dev.md...
+│   ├── net-dev.md                     # agente .NET (Sabre/Amadeus/AirGateway)
+│   └── react-dev.md                   # agente React (paneles/herramientas internas)
+│                                       # añade aquí php-dev.md...
 │
 ├── skills/
-│   └── net-clean-architecture/
+│   ├── net-clean-architecture/
+│   │   └── SKILL.md
+│   ├── react-component-patterns/
+│   │   └── SKILL.md
+│   └── shared-jira-task-author/
 │       └── SKILL.md                   # cada skill vive en su propia carpeta
-│                                       # añade aquí php-*/,  react-*/,  shared-*/...
+│                                       # añade aquí php-*/, react-*/, shared-*/...
 │
 └── scripts/
     ├── install.ps1                    # instalación automática (Windows, ejecutar 1 vez)
@@ -180,35 +185,17 @@ viceversa — no es solo orden, es aislamiento real de contexto.
 
 ---
 
-## Cómo crear un agente nuevo
+## Cómo crear un agente o una skill nueva
 
-1. Crea `agents/<stack>-dev.md` (o `<stack>-<rol>.md` si necesitas más de
-   uno por stack, ej. `net-reviewer.md`).
-2. El frontmatter **debe incluir**:
-   - `name`: coincide con el nombre del archivo.
-   - `description`: una frase clara de qué hace.
-   - `mode: primary` — **obligatorio** si quieres poder invocarlo con
-     `opencode --agent <nombre>`. Sin este campo, OpenCode no lo expone
-     como agente principal seleccionable.
-   - `permission.skill` con los prefijos que debe ver.
-3. El cuerpo del Markdown es el system prompt del agente.
-4. Guarda el archivo **en UTF-8** (en Windows con Notepad: Guardar como →
-   Codificación: UTF-8, nunca "ANSI" — si no, los acentos se corrompen).
+**No lo hagas a mano.** Pídeselo a tu agente de IA (Claude Code,
+OpenCode...) trabajando dentro de este repo — el checklist completo
+(dónde va cada archivo, frontmatter obligatorio, naming, versionado) vive
+en [`CONTRIBUTING.md`](./CONTRIBUTING.md), que es el documento pensado
+para que lo siga el propio agente. Ejemplos de lo que puedes pedirle:
 
-## Cómo crear una skill nueva
-
-1. Crea la carpeta `skills/<stack>-<nombre>/` y dentro un `SKILL.md`.
-2. Frontmatter mínimo:
-   ```yaml
-   ---
-   name: <stack>-<nombre>
-   description: Descripción específica de cuándo usar esta skill
-   ---
-   ```
-3. El cuerpo describe la convención/patrón concreto — mejor una skill
-   completa y útil que varias a medias.
-4. Añade el prefijo correspondiente al `permission.skill` del agente que
-   deba poder usarla.
+- "Crea el agente `react-dev` siguiendo el mismo patrón que `net-dev`."
+- "Añade una skill `php-symfony-conventions` para tal convención."
+- "Esta skill ya no se usa, márcala como deprecated."
 
 ---
 
@@ -246,8 +233,9 @@ PowerShell. Cierra la ventana actual por completo y abre otra.
 ## Cómo contribuir
 
 1. Rama nueva desde `main`.
-2. Añade/edita agente o skill siguiendo la convención de nombres
-   (prefijo de stack, carpetas en plural, `mode: primary` en agentes).
+2. Pídeselo a tu agente de IA siguiendo [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+   (naming, frontmatter, carpetas en plural, `mode: primary` en agentes) —
+   no edites `agents/`/`skills/` a mano.
 3. Prueba localmente antes de pedir revisión:
    - Windows: `$env:OPENCODE_CONFIG_DIR = "C:\ruta\a\tu\rama"`
    - macOS/Linux: `OPENCODE_CONFIG_DIR=/ruta/a/tu/rama opencode`

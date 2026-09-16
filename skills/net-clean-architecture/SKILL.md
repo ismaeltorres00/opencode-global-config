@@ -2,6 +2,10 @@
 name: net-clean-architecture
 description: Convenciones de arquitectura y capas para proyectos .NET del equipo (controllers, services, repos, DTOs de integraciones aéreas)
 license: internal
+metadata:
+  version: "1.0.0"
+  owner: "Equipo Dev CDV"
+  last_updated: "2026-09-16"
 ---
 
 ## Capas del proyecto
