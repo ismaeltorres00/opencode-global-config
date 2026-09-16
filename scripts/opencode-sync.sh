@@ -1,25 +1,27 @@
-#!/usr/bin/env bash
-# Sincroniza la config global de OpenCode con el repo central del equipo.
-# Uso: bash opencode-sync.sh
+# Sincroniza la config de OpenCode del equipo con la última versión del repo.
+# Uso: .\opencode-sync.ps1
 
-set -euo pipefail
+$ConfigDir = Join-Path $env:USERPROFILE "opencode-global-config"
 
-CONFIG_DIR="$HOME/.config/opencode"
+if (-not (Test-Path "$ConfigDir\.git")) {
+    Write-Host "$ConfigDir no es un repo git. Clónalo primero con:" -ForegroundColor Red
+    Write-Host "  git clone <url-del-repo> `"$ConfigDir`""
+    exit 1
+}
 
-if [ ! -d "$CONFIG_DIR/.git" ]; then
-  echo "❌ $CONFIG_DIR no es un repo git. Instálalo primero con:"
-  echo "   git clone <url-del-repo> $CONFIG_DIR"
-  exit 1
-fi
+Write-Host "Actualizando config de OpenCode..." -ForegroundColor Cyan
 
-echo "🔄 Actualizando config de OpenCode..."
-git -C "$CONFIG_DIR" fetch --quiet
-LOCAL=$(git -C "$CONFIG_DIR" rev-parse @)
-REMOTE=$(git -C "$CONFIG_DIR" rev-parse @{u})
+Push-Location $ConfigDir
+git fetch --quiet
 
-if [ "$LOCAL" = "$REMOTE" ]; then
-  echo "✅ Ya estás en la última versión."
-else
-  git -C "$CONFIG_DIR" pull --quiet
-  echo "✅ Config actualizada a la última versión del repo."
-fi
+$local = git rev-parse '@'
+$remote = git rev-parse '@{u}'
+
+if ($local -eq $remote) {
+    Write-Host "Ya estás en la última versión." -ForegroundColor Green
+} else {
+    git pull --quiet
+    Write-Host "Config actualizada a la última versión del repo." -ForegroundColor Green
+}
+
+Pop-Location
