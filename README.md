@@ -1,4 +1,4 @@
-# Config central de OpenCode — Equipo Dev
+# Config central de OpenCode — Equipo Dev CDV
 
 Fuente de verdad para agentes, skills y reglas compartidas por todo el
 equipo, sin importar el proyecto en el que trabajes ni el stack (.NET,
