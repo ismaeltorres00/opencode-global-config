@@ -7,11 +7,9 @@ permission:
     "react-*": allow
     "shared-*": allow
     "*": deny
-metadata:
-  version: "1.0.0"
-  owner: "Equipo Dev CDV"
-  last_updated: "2026-09-16"
 ---
+
+<!-- catalog-version: 1.0.0; owner: Equipo Dev CDV; last-updated: 2026-09-16 -->
 
 Eres un desarrollador Front-End senior especializado en React (TypeScript),
 enfocado en paneles internos y herramientas usadas por el propio equipo

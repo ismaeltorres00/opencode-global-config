@@ -6,17 +6,11 @@ reglas que el agente sigue cuando trabaja en vuestros proyectos reales
 (Sabre, Amadeus, AirGateway...) — ese archivo se carga en todas partes,
 este `CONTRIBUTING.md` solo aplica aquí dentro.
 
-> **No edites `agents/` ni `skills/` a mano.** Pídeselo a tu agente de IA
-> (Claude Code, OpenCode...) trabajando dentro de este repo: "añade una
-> skill `php-symfony-conventions` para tal caso", "crea el agente
-> `react-dev`", "esta skill ya no se usa, márcala como deprecated"... Este
-> documento es precisamente el contexto que el agente necesita para
-> hacerlo bien a la primera — dónde va cada cosa, qué tipo de recurso es
-> (agente vs. skill vs. `.opencode/` de proyecto), qué naming usar, qué
-> campos de frontmatter son obligatorios y cómo versionar. Si el agente
-> te pregunta el prefijo de stack o el owner es porque este documento no
-> se lo resuelve — respóndele y sigue adelante, no lo rellenes tú a mano
-> saltándote el checklist.
+> **No edites `agents/` ni `skills/` a mano.** Desde la raíz de este repo,
+> ejecuta `opencode --agent shared-catalog-maintainer` y pide el cambio en
+> lenguaje natural. Este documento es el contrato que sigue ese agente para
+> decidir el alcance (agente, skill o `.opencode/` de proyecto), aplicar
+> nomenclatura, permisos, metadatos y versionado.
 >
 > Por eso, si añades o cambias algo en este documento, hazlo pensando en
 > que quien lo va a "leer y ejecutar" la mayoría de las veces es un
@@ -60,24 +54,26 @@ Checklist obligatorio en `agents/<nombre>.md`:
 ```yaml
 ---
 name: <stack>-dev                    # coincide con el nombre del archivo
-description: Frase clara de una línea sobre qué hace este agente
+description: "Frase clara de una línea sobre qué hace este agente"
 mode: primary                        # obligatorio para poder invocarlo con --agent
 permission:
   skill:
     "<stack>-*": allow
     "shared-*": allow
     "*": deny
-metadata:
-  version: "1.0.0"
-  owner: "<tu nombre o equipo>"
-  last_updated: "2026-09-16"
 ---
+
+<!-- catalog-version: 1.0.0; owner: <tu nombre o equipo>; last-updated: 2026-09-16 -->
 
 <system prompt aquí>
 ```
 
 Guarda siempre en **UTF-8** (en Windows, Notepad → Guardar como →
 Codificación: UTF-8; "ANSI" corrompe los acentos).
+
+Un stack nuevo debe empezar por este agente primario antes de publicar skills
+con su prefijo. Sus permisos solo permiten `<stack>-*` y `shared-*`; no se
+amplían los permisos de otros agentes para hacerlo visible.
 
 ---
 
@@ -88,8 +84,7 @@ Checklist obligatorio en `skills/<nombre>/SKILL.md`:
 ```yaml
 ---
 name: <stack>-<descripcion-corta>
-description: Cuándo debe cargarse esta skill (sé específico, el agente
-  decide si la usa según este texto)
+description: "Cuándo debe cargarse esta skill; sé específico porque el agente decide activarla según este texto."
 metadata:
   version: "1.0.0"
   owner: "<tu nombre o equipo>"
@@ -102,12 +97,17 @@ metadata:
 Una skill completa y útil sobre un caso concreto vale más que cinco a
 medias sobre casos genéricos.
 
+La descripción debe ocupar una sola línea y estar entre comillas para que siga
+siendo YAML válido si incluye caracteres como `:`.
+
 ---
 
 ## Versionado y control de cambios
 
-No usamos un changelog central: **cada skill/agente versiona su propio
-`metadata.version`** (SemVer simplificado: `MAYOR.MENOR.PARCHE`).
+No usamos un changelog central. Las **skills** versionan mediante
+`metadata.version`; los **agentes** usan el comentario
+`catalog-version` inmediatamente después del frontmatter. Ambos emplean
+SemVer simplificado: `MAYOR.MENOR.PARCHE`.
 
 - **PARCHE** (`1.0.0` → `1.0.1`): corrección menor, typo, aclaración sin
   cambiar el comportamiento.
@@ -117,9 +117,10 @@ No usamos un changelog central: **cada skill/agente versiona su propio
   podría sorprender a alguien que ya lo usaba (cambia una convención
   existente, elimina una recomendación anterior).
 
-Actualiza siempre `last_updated` al tocar el archivo, aunque sea un
-cambio de PARCHE — así cualquiera puede ver de un vistazo si una
-skill/agente lleva mucho tiempo sin revisión.
+Actualiza siempre `metadata.last_updated` en skills o `last-updated` en el
+comentario de agentes al tocar el archivo, aunque sea un cambio de PARCHE.
+Así cualquiera puede ver de un vistazo si un recurso lleva mucho tiempo sin
+revisión.
 
 Un cambio **MAYOR** en un agente o skill que ya usa el equipo activamente
 requiere avisar en el canal del equipo antes de mergear, no solo el PR.
@@ -129,7 +130,8 @@ requiere avisar en el canal del equipo antes de mergear, no solo el PR.
 ## Retirar un agente o skill
 
 No se borra directamente:
-1. Añade `deprecated: true` a `metadata` y explica en el propio
+1. En skills añade `deprecated: true` a `metadata`; en agentes añade
+   `deprecated: true` al comentario `catalog-version`. Explica en la propia
    `description` qué lo sustituye (si aplica).
 2. Déjalo así como mínimo un sprint, para que nadie lo pierda sin aviso.
 3. Pasado ese tiempo, bórralo en un PR aparte, mencionando en la

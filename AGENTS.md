@@ -22,3 +22,10 @@
   variables ya estén en inglés (seguir la convención del archivo que se edita).
 - Si falta contexto para tomar una decisión de arquitectura, preguntar antes
   de asumir.
+
+## Catálogo de OpenCode
+- Para crear, actualizar o retirar recursos de este repositorio, usar la skill
+  `shared-catalog-governance` y seguir `CONTRIBUTING.md`.
+- Los recursos globales usan los prefijos `net-*`, `php-*`, `react-*` o
+  `shared-*`; los específicos de producto pertenecen a `.opencode/` del
+  proyecto correspondiente.

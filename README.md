@@ -135,7 +135,8 @@ crontab -e
 │
 ├── agents/
 │   ├── net-dev.md                     # agente .NET (Sabre/Amadeus/AirGateway)
-│   └── react-dev.md                   # agente React (paneles/herramientas internas)
+│   ├── react-dev.md                   # agente React (paneles/herramientas internas)
+│   └── shared-catalog-maintainer.md   # punto de entrada para mantener este catálogo
 │                                       # añade aquí php-dev.md...
 │
 ├── skills/
@@ -143,8 +144,12 @@ crontab -e
 │   │   └── SKILL.md
 │   ├── react-component-patterns/
 │   │   └── SKILL.md
-│   └── shared-jira-task-author/
+│   ├── shared-jira-task-author/
 │       └── SKILL.md                   # cada skill vive en su propia carpeta
+│   ├── shared-method-documentation/
+│       └── SKILL.md                   # documentación de métodos transversal
+│   └── shared-catalog-governance/
+│       └── SKILL.md                   # normas operativas del catálogo
 │                                       # añade aquí php-*/, react-*/, shared-*/...
 │
 └── scripts/
@@ -187,15 +192,24 @@ viceversa — no es solo orden, es aislamiento real de contexto.
 
 ## Cómo crear un agente o una skill nueva
 
-**No lo hagas a mano.** Pídeselo a tu agente de IA (Claude Code,
-OpenCode...) trabajando dentro de este repo — el checklist completo
-(dónde va cada archivo, frontmatter obligatorio, naming, versionado) vive
-en [`CONTRIBUTING.md`](./CONTRIBUTING.md), que es el documento pensado
-para que lo siga el propio agente. Ejemplos de lo que puedes pedirle:
+Usa el agente central desde la raíz de este repositorio:
 
-- "Crea el agente `react-dev` siguiendo el mismo patrón que `net-dev`."
-- "Añade una skill `php-symfony-conventions` para tal convención."
-- "Esta skill ya no se usa, márcala como deprecated."
+```powershell
+opencode --agent shared-catalog-maintainer
+```
+
+Después pídele en lenguaje natural lo que necesitas. Este agente decide si
+debe crear o ampliar un recurso, aplica el checklist de nomenclatura y
+versionado, y distingue lo global de lo que debe vivir en el `.opencode/` de
+un proyecto. Ejemplos:
+
+- "Crea el agente y las skills iniciales para el stack PHP."
+- "Añade una skill global para convenciones de Symfony."
+- "Esta skill ya no se usa, márcala como deprecated y documenta su sustituta."
+
+No uses este agente desde un proyecto de producto para crear reglas locales:
+pídele que prepare el recurso en `.opencode/` del proyecto. Las reglas
+normativas completas siguen en [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ---
 
@@ -233,9 +247,9 @@ PowerShell. Cierra la ventana actual por completo y abre otra.
 ## Cómo contribuir
 
 1. Rama nueva desde `main`.
-2. Pídeselo a tu agente de IA siguiendo [`CONTRIBUTING.md`](./CONTRIBUTING.md)
-   (naming, frontmatter, carpetas en plural, `mode: primary` en agentes) —
-   no edites `agents/`/`skills/` a mano.
+2. Ejecuta `opencode --agent shared-catalog-maintainer` desde la raíz del repo
+   y solicita el cambio. El agente aplica [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+   (naming, metadatos, carpetas en plural y permisos por stack).
 3. Prueba localmente antes de pedir revisión:
    - Windows: `$env:OPENCODE_CONFIG_DIR = "C:\ruta\a\tu\rama"`
    - macOS/Linux: `OPENCODE_CONFIG_DIR=/ruta/a/tu/rama opencode`
