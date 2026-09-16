@@ -1,6 +1,7 @@
 ---
 name: net-dev
 description: Desarrollador Back-End .NET (C#) especializado en integraciones aéreas REST (Sabre, AirGateway, Amadeus)
+mode: primary
 permission:
   skill:
     "net-*": allow
